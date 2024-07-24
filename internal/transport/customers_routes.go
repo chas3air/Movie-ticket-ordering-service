@@ -26,6 +26,7 @@ func Create_customers(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		login := r.Form.Get("login")
 		password := r.Form.Get("password")
+		role := r.Form.Get("role")
 		name := r.Form.Get("name")
 		surname := r.Form.Get("surname")
 		age_i, err := strconv.Atoi(r.Form.Get("age"))
@@ -34,7 +35,7 @@ func Create_customers(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = psql.InsertCustomer(models.Customer{Login: login, Password: password, Name: name, Surname: surname, Age: age_i})
+		err = psql.InsertCustomer(models.Customer{-1, login, password, role, name, surname, age_i})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -62,12 +63,13 @@ func Update_customers(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		login := r.Form.Get("login")
 		password := r.Form.Get("password")
+		role := r.Form.Get("role")
 		name := r.Form.Get("name")
 		surname := r.Form.Get("surname")
 		age_s := r.Form.Get("age")
 		age_i, _ := strconv.Atoi(age_s)
 
-		err := psql.UpdateCustomer(models.Customer{id_i, login, password, name, surname, age_i})
+		err := psql.UpdateCustomer(models.Customer{id_i, login, password, role, name, surname, age_i})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

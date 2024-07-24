@@ -26,7 +26,7 @@ func GetPeople() ([]models.Customer, error) {
 
 	for rows.Next() {
 		c := models.Customer{}
-		err := rows.Scan(&c.Id, &c.Login, &c.Password, &c.Name, &c.Surname, &c.Age)
+		err := rows.Scan(&c.Id, &c.Login, &c.Password, &c.Role, &c.Name, &c.Surname, &c.Age)
 		if err != nil {
 			log.Println(err)
 			continue
@@ -45,7 +45,8 @@ func InsertCustomer(customer models.Customer) error {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("INSERT INTO "+config.UsersTableName+"(login, password, name, surname, age) VALUES ($1, $2, $3, $4, $5)", customer.Login, customer.Password, customer.Name, customer.Surname, customer.Age)
+	_, err = db.Exec("INSERT INTO "+config.UsersTableName+"(login, password, role, name, surname, age) VALUES ($1, $2, $3, $4, $5, $6)",
+		customer.Login, customer.Password, customer.Role, customer.Name, customer.Surname, customer.Age)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -61,7 +62,8 @@ func UpdateCustomer(customer models.Customer) error {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("UPDATE "+config.UsersTableName+" SET login=$1, password=$2, name=$3, surname=$4, age=$5 WHERE id=$6;", customer.Login, customer.Password, customer.Name, customer.Surname, customer.Age, customer.Id)
+	_, err = db.Exec("UPDATE "+config.UsersTableName+" SET login=$1, password=$2, role=$3, name=$4, surname=$5, age=$6 WHERE id=$7;",
+		customer.Login, customer.Password, customer.Role, customer.Name, customer.Surname, customer.Age, customer.Id)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -95,9 +97,27 @@ func GetPerson(id int) (models.Customer, error) {
 
 	c := models.Customer{}
 	row := db.QueryRow("SELECT * FROM "+config.UsersTableName+" WHERE id=$1", id)
-	err = row.Scan(&c.Id, &c.Login, &c.Password, &c.Name, &c.Surname, &c.Age)
+	err = row.Scan(&c.Id, &c.Login, &c.Password, &c.Role, &c.Name, &c.Surname, &c.Age)
 	if err != nil {
 		return models.Customer{}, err
 	}
 	return c, nil
+}
+
+func GetPersonWithLoginAndPassword(login, password string) (models.Customer, error) {
+	db, err := getConnect()
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	c := models.Customer{}
+
+	row := db.QueryRow("SELECT * FROM "+config.UsersTableName+" WHERE login=$1 AND password=$2", login, password)
+	err = row.Scan(&c.Id, &c.Login, &c.Password, &c.Role, &c.Name, &c.Surname, &c.Age)
+	if err != nil {
+		return models.Customer{}, err
+	}
+	return c, nil
+
 }

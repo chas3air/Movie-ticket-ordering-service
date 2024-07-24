@@ -7,6 +7,8 @@ import (
 
 func Run() {
 	http.HandleFunc("/", transport.Index)
+	http.HandleFunc("/login", transport.Login)
+	http.HandleFunc("/signup", transport.Signup)
 
 	http.HandleFunc("/customers", transport.Index_customers)
 	http.HandleFunc("/customers/create", transport.Create_customers)
