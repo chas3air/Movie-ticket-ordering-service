@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"go_psql/internal/config"
 	"go_psql/internal/models"
 	"net/http"
@@ -9,7 +10,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func adminMiddleware(next http.HandlerFunc) http.HandlerFunc {
+func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
 			http.Error(w, "you are not logged before", 404)
@@ -18,6 +19,23 @@ func adminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		u := GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 		if u.Role != "admin" {
+			http.Error(w, "role is not available", http.StatusNotFound)
+			return
+		}
+
+		next(w, r)
+	}
+}
+
+func UserMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
+			http.Error(w, "you are not logged before", 404)
+			return
+		}
+
+		u := GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
+		if u.Role != "user" && u.Role != "admin" {
 			http.Error(w, "role is not available", http.StatusNotFound)
 			return
 		}
@@ -38,11 +56,11 @@ func GetUser(w http.ResponseWriter, r *http.Request, key string, limitTime int, 
 	}
 
 	u := models.Customer{}
-	un, ok := st[cookie.Value]
+	s, ok := st[cookie.Value]
 	if ok {
-		un.LastActivity = time.Now()
-		st[cookie.Value] = un
-		u = ut[un.UserLogin]
+		s.LastActivity = time.Now()
+		st[cookie.Value] = s
+		u = ut[s.UserLogin]
 	}
 
 	return u
@@ -75,5 +93,18 @@ func SessionCleaner(session_table map[string]models.Session, limitTime int) {
 		}
 
 		time.Sleep(time.Second * 11)
+	}
+}
+
+func ShowSessions(session_table map[string]models.Session) {
+	for {
+		fmt.Println("**********")
+		for i, v := range session_table {
+			fmt.Println(i, " - ", v)
+		}
+
+		fmt.Println("**********\n")
+
+		time.Sleep(time.Second * 12)
 	}
 }
