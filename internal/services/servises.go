@@ -13,7 +13,7 @@ import (
 func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
-			http.Error(w, "you are not logged before", 404)
+			http.Redirect(w, r, "/", 303)
 			return
 		}
 
@@ -30,7 +30,7 @@ func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 func UserMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
-			http.Error(w, "you are not logged before", 404)
+			http.Redirect(w, r, "/", 303)
 			return
 		}
 

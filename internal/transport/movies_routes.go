@@ -3,8 +3,10 @@ package transport
 import (
 	"go_psql/internal/database/psql"
 	"go_psql/internal/models"
+	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func Index_movies(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +49,7 @@ func Create_movies(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		http.Redirect(w, r, "/movies", http.StatusBadRequest)
+		http.Redirect(w, r, "/movies/showall", http.StatusBadRequest)
 	}
 
 	err := tpl.ExecuteTemplate(w, "movies_create.html", nil)
@@ -91,7 +93,7 @@ func Update_movies(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		http.Redirect(w, r, "/movies/showall", http.StatusSeeOther)
 	}
 
 	err = tpl.ExecuteTemplate(w, "movies_update.html", m)
@@ -111,5 +113,47 @@ func Delete_movies(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	http.Redirect(w, r, "/movies", http.StatusSeeOther)
+	http.Redirect(w, r, "/movies/showall", http.StatusSeeOther)
+}
+
+func ShowMoviesForUser(w http.ResponseWriter, r *http.Request) {
+	movies, err := psql.GetMovies()
+	if err != nil {
+		http.Error(w, err.Error(), 404)
+		return
+	}
+
+	err = tpl.ExecuteTemplate(w, "movies_showall.html", movies)
+	if err != nil {
+		http.Error(w, err.Error(), 404)
+		return
+	}
+}
+
+func OrderTicketToMovie(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	id_s := r.Form.Get("id")
+	id_i, _ := strconv.Atoi(id_s)
+	m, err := psql.GetMovie(id_i)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		email := r.Form.Get("email")
+
+		t := models.Ticket{string(rand.Intn(1000000)), m.Title, time.Now(), 0}
+
+		_ = email
+		_ = t
+
+		http.Redirect(w, r, "/movies", 303)
+	}
+
+	err = tpl.ExecuteTemplate(w, "movie_ordermovie.html", nil)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
 }

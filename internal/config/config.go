@@ -9,7 +9,7 @@ const DataBaseName = "models"
 const UsersTableName = "users"
 const MoviesTableName = "movies"
 
-const LimitTime = 10
+const LimitTime = 60
 const CookieName = "session_user"
 
 var SessionTable = map[string]models.Session{} // cookie - session{Login, last time activity}

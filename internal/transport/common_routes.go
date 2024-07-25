@@ -16,7 +16,10 @@ import (
 var tpl = web.GetTPL()
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
+	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
+		http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		return
+	}
 
 	err := tpl.ExecuteTemplate(w, "index_choise.html", nil)
 	if err != nil {
@@ -26,8 +29,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
-
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
 		http.Redirect(w, r, "/movies", http.StatusSeeOther)
 		return
@@ -62,8 +63,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func Signup(w http.ResponseWriter, r *http.Request) {
-	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
-
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
 		http.Redirect(w, r, "/movies", http.StatusSeeOther)
 		return
