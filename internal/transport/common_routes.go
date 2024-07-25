@@ -29,6 +29,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
+
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
 		http.Redirect(w, r, "/movies", http.StatusSeeOther)
 		return
@@ -52,7 +54,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		config.SessionTable[cookie.Name] = models.Session{login, time.Now()}
 		config.UsersTable[login] = c
 
-		http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	}
 
 	err := tpl.ExecuteTemplate(w, "index_login.html", nil)
@@ -63,6 +65,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func Signup(w http.ResponseWriter, r *http.Request) {
+	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
+
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
 		http.Redirect(w, r, "/movies", http.StatusSeeOther)
 		return
@@ -103,6 +107,34 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := tpl.ExecuteTemplate(w, "index_signup.html", nil)
+	if err != nil {
+		http.Error(w, err.Error(), 404)
+		return
+	}
+}
+
+func ShowProfile(w http.ResponseWriter, r *http.Request) {
+	u := services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
+
+	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); !ok {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		r.ParseForm()
+
+		http.SetCookie(w, &http.Cookie{
+			Name:   config.CookieName,
+			Value:  "",
+			MaxAge: -1,
+		})
+
+		http.Redirect(w, r, "/", 303)
+		return
+	}
+
+	err := tpl.ExecuteTemplate(w, "index_profile.html", u)
 	if err != nil {
 		http.Error(w, err.Error(), 404)
 		return

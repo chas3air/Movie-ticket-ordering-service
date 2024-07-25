@@ -4,15 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/web/css/customers_index.css">
     <title>Index</title>
 </head>
 <body>
-    <ul>
-        {{range .}}
-        <li>{{.}} - <a href="/customers/update?id={{.Id}}">update</a> - <a href="/customers/delete?id={{.Id}}">delete</a></li>
-        {{end}}
-    </ul>
+    <header>
+        <div class="header-content">
+            <h1>Users</h1>
+            <a href="/profile" class="profile-link">
+                <div class="profile-icon">
+                    Profile
+                </div>
+            </a>
+        </div>
+    </header>
 
-    <p><a href="/customers/create">create user</a></p>
+    <main>
+        <a href="/profile"><div class="create">profile</div></a>
+        <a href="/customers/create"><div class="create">create user</div></a>
+        <div class="elements">
+            {{range .}} 
+                <div class="item">
+                    <p>Login: {{.Login}}</p>
+                    <p>Password: {{.Password}}</p>
+                    <p>Role: {{.Role}}</p>
+                    <p>Name: {{.Name}}</p>
+                    <p>Surname: {{.Surname}}</p>
+                    <p>Age: {{.Age}}</p>
+                    <a href="/customers/update?id={{.Id}}">update</a>
+                    <a href="/customers/delete?id={{.Id}}">delete</a>
+                </div>
+            {{end}}
+        </div>
+    </main>
+    <footer>...</footer>
 </body>
 </html>

@@ -1,0 +1,72 @@
+/* Общие стили */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+  
+  /* Стили для header */
+header {
+    display: flex;
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+  
+header h1 {
+    margin: 0;
+}
+  
+  /* Стили для main */
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-grow: 1;
+    padding: 2rem;
+    justify-content: space-around;
+    align-items: center;
+}
+  
+  /* Стили для footer */
+footer {
+    display: flex;
+    background-color: #f1f1f1;
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.sign-up, .login {
+    display: flex;
+    color: white;
+    background-color: rgb(207, 116, 219);
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 150px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    color: #102d3d;
+}
+
+a:hover {
+    color: #005a87;
+}
+  
+a:visited {
+    color: #6b3fa0;
+}
+
+a:active {
+    color: #ff6b6b; 
+}

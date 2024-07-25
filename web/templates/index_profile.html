@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/web/css/index_profile.css">
+    <title>Your profile</title>
+</head>
+<body>
+    <header>Profile</header>
+    <main>
+        <div class="photo"><span>.</span></div>
+        <div class="additional-information">
+            <div class="block">
+                <p>Login: {{.Login}}</p>
+                <p>Password: {{.Password}}</p>
+                <p>Role: {{.Role}}</p>
+            </div>
+            <div class="block">
+                <p>Name: {{.Name}}</p>
+                <p>Surname: {{.Surname}}</p>
+                <p>Age: {{.Age}}</p>
+            </div>
+            {{if eq .Role "admin"}}
+                <div class="block">
+                    <p><a href="/customers">customers</a></p>
+                    <p><a href="/movies/showall">movies</a></p>
+                </div>
+            {{end}}
+            <p><a href="/movies">show all movies</a></p>
+            <div class="exit-button">
+                <form method="post">
+                    <input type="submit" value="EXIT">
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>...</footer>
+</body>
+</html>

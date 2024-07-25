@@ -3,12 +3,12 @@ package models
 import "fmt"
 
 type Movie struct {
-	Id          int
-	Title       string
-	Director    string
-	ReleaseYear int
-	Genre       string
-	Duration    int
+    Id          int    `json:"id"`
+    Title       string `json:"title"`
+    Director    string `json:"director"`
+    ReleaseYear int    `json:"releaseYear"`
+    Genre       string `json:"genre"`
+    Duration    int    `json:"duration"`
 }
 
 func (m Movie) String() string {

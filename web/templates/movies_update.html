@@ -4,31 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/web/css/movies_update.css">
     <title>Update</title>
 </head>
 <body>
-    <form method="post">
-        <label for="title">Title</label>
-        <input type="text" name="title" required autofocus value="{{.Title}}">
-        <br>
+    <header>Update</header>
+    <main>
+        <form method="post">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" required autofocus value="{{.Title}}">
+                <br>
+            </div>
 
-        <label for="director">Director</label>
-        <input type="text" name="direcroe"  required value="{{.Director}}">
-        <br>
+            <div class="form-group">
+                <label for="director">Director</label>
+                <input type="text" name="direcroe"  required value="{{.Director}}">
+                <br>
+            </div>
 
-        <label for="release_year">Release year</label>
-        <input type="text" name="release_year"  required value="{{.ReleaseYear}}">
-        <br>
+            <div class="form-group">
+                <label for="release_year">Release year</label>
+                <input type="text" name="release_year"  required value="{{.ReleaseYear}}">
+                <br>
+            </div>
 
-        <label for="genre">Genre</label>
-        <input type="text" name="genre"  required value="{{.Genre}}">
-        <br>
+            <div class="form-group">
+                <label for="genre">Genre</label>
+                <input type="text" name="genre"  required value="{{.Genre}}">
+                <br>
+            </div>
 
-        <label for="duration">Duration</label>
-        <input type="text" name="duration"  required value="{{.Duratoin}}">
-        <br>
+            <div class="form-group">
+                <label for="duration">Duration</label>
+                <input type="text" name="duration"  required value="{{.Duratoin}}">
+                <br>
+            </div>
 
-        <input type="submit"><br>
-    </form>
+            <div class="form-group">
+                <input type="submit"><br>
+            </div>
+        </form>
+    </main>
+<footer>...</footer>
 </body>
 </html>

@@ -56,10 +56,10 @@ func GetUser(w http.ResponseWriter, r *http.Request, key string, limitTime int, 
 	}
 
 	u := models.Customer{}
-	s, ok := st[cookie.Value]
+	s, ok := st[cookie.Name]
 	if ok {
 		s.LastActivity = time.Now()
-		st[cookie.Value] = s
+		st[cookie.Name] = s
 		u = ut[s.UserLogin]
 	}
 

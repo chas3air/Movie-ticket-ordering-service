@@ -1,0 +1,77 @@
+/* Общие стили */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+  
+  /* Стили для header */
+header {
+    display: flex;
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+  
+header h1 {
+    margin: 0;
+}
+  
+  /* Стили для main */
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-grow: 1;
+    padding: 2rem;
+    justify-content: space-around;
+    align-items: center;
+}
+  
+  /* Стили для footer */
+footer {
+    display: flex;
+    background-color: #f1f1f1;
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+  
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+  
+.form-group input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex-grow: 1;
+}
+
+.form-container input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin: 0 auto;
+}

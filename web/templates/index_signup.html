@@ -4,31 +4,55 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/web/css/index_signup.css">
     <title>Document</title>
 </head>
 <body>
-    <form method="post">
-        <label for="login">Login</label>
-        <input type="text" name="login" required>
-        <br>
+    <header>Sign up</header>
+    <main>
+        <form method="post">
+            <div class="row-container">
+                <div class="form-group">
+                    <label for="login">Login</label>
+                    <input type="text" name="login" required>
+                    <br>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="text" name="password" required>
+                    <br>
+                </div>
+            </div>
+                
+            <div class="row-container">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" required>
+                    <br>
+                </div>
 
-        <label for="password">Pssword</label>
-        <input type="text" name="password" required>
-        <br>
+                <div class="form-group">
+                    <label for="surname">Surname</label>
+                    <input type="text" name="surname" required>
+                    <br>
+                </div>
 
-        <label for="name">Name</label>
-        <input type="text" name="name" required>
-        <br>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="text" name="age" required>
+                    <br>
+                </div>
+            </div>
 
-        <label for="surname">Surname</label>
-        <input type="text" name="surname" required>
-        <br>
-
-        <label for="age">Surname</label>
-        <input type="text" name="age" required>
-        <br>
-
-        <input type="submit"><br>
-    </form>
+            <div class="row-container">
+                <div class="form-group">
+                    <input type="submit"><br>
+                    <br>
+                </div>
+            </div>
+        </form>
+    </main>
+    <footer>...</footer>
 </body>
 </html>

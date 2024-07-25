@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/web/css/movies_index.css">
-    <title>Index</title>
+    <link rel="stylesheet" href="/web/css/movies_for_order.css">
+    <title>Movies</title>
 </head>
 <body>
-    <header>Movies</header>
+    <header>Caatalog movies</header>
     <main>
-        <a href="/movies/create"><div class="create">create movie</div></a>
         <div class="elements">
             {{range .}}
                 <div class="item">
@@ -19,8 +18,7 @@
                     <p>Release year: {{.ReleaseYear}}</p>
                     <p>Genre: {{.Genre}}</p>
                     <p>Duration: {{.Duration}}</p>
-                    <a href="/movies/update?id={{.Id}}">update</a>
-                    <a href="/movies/delete?id={{.Id}}">delete</a>
+                    <a href="/ordermovie?id={{.Id}}">order</a>
                 </div>
             {{end}}
         </div>

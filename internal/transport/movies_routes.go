@@ -1,8 +1,11 @@
 package transport
 
 import (
+	"go_psql/internal/config"
+	"go_psql/internal/database/json"
 	"go_psql/internal/database/psql"
 	"go_psql/internal/models"
+	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -123,7 +126,7 @@ func ShowMoviesForUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = tpl.ExecuteTemplate(w, "movies_showall.html", movies)
+	err = tpl.ExecuteTemplate(w, "movies_for_order.html", movies)
 	if err != nil {
 		http.Error(w, err.Error(), 404)
 		return
@@ -143,12 +146,22 @@ func OrderTicketToMovie(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		email := r.Form.Get("email")
 
-		t := models.Ticket{string(rand.Intn(1000000)), m.Title, time.Now(), 0}
+		t := models.Ticket{string(rand.Intn(1000000)), m.Title, time.Now(), 0, email}
 
-		_ = email
-		_ = t
+		allTickets, err := json.UnmarshalTickets(config.PathToTicketJsonFile)
+		if err != nil {
+			log.Println("1", err)
+			return
+		}
 
-		http.Redirect(w, r, "/movies", 303)
+		allTickets = append(allTickets, t)
+		err = json.MarshalTickets(config.PathToTicketJsonFile, allTickets)
+		if err != nil {
+			log.Println("2", err)
+			return
+		}
+
+		http.Redirect(w, r, "/movies", http.StatusSeeOther)
 	}
 
 	err = tpl.ExecuteTemplate(w, "movie_ordermovie.html", nil)

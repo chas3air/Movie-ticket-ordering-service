@@ -16,10 +16,11 @@ func Run() {
 
 	// router gorilla/max
 	r := mux.NewRouter()
-
+	r.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("./web"))))
 	r.HandleFunc("/", transport.Index)
 	r.HandleFunc("/login", transport.Login)
 	r.HandleFunc("/signup", transport.Signup)
+	r.HandleFunc("/profile", transport.ShowProfile)
 
 	// customers admin
 	r.HandleFunc("/customers", services.AdminMiddleware(transport.Index_customers))

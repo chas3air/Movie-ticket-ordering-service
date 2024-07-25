@@ -8,8 +8,9 @@ const TemplatesPath = "go_psql/web/templates"
 const DataBaseName = "models"
 const UsersTableName = "users"
 const MoviesTableName = "movies"
+const PathToTicketJsonFile = "../database/json/tickets.json"
 
-const LimitTime = 60
+const LimitTime = 600000
 const CookieName = "session_user"
 
 var SessionTable = map[string]models.Session{} // cookie - session{Login, last time activity}
