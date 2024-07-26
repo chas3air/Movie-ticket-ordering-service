@@ -17,6 +17,7 @@ header {
 
 .header-content {
     display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
@@ -25,7 +26,7 @@ header {
     color: inherit;
     display: flex;
     align-items: center;
-    margin-left: auto;
+    margin-right: 10px;
 }
 
 .profile-icon {
@@ -36,7 +37,8 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 1rem;
+    margin-right: 10px;
+
 }
 
 .profile-icon i {

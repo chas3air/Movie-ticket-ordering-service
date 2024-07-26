@@ -10,7 +10,7 @@ const UsersTableName = "users"
 const MoviesTableName = "movies"
 const PathToTicketJsonFile = "../database/json/tickets.json"
 
-const LimitTime = 600000
+const LimitTime = 60
 const CookieName = "session_user"
 
 var SessionTable = map[string]models.Session{} // cookie - session{Login, last time activity}

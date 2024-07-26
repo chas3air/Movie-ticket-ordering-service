@@ -1,6 +1,7 @@
 package transport
 
 import (
+	"fmt"
 	"go_psql/internal/config"
 	"go_psql/internal/database/psql"
 	"go_psql/internal/models"
@@ -53,6 +54,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 		config.SessionTable[cookie.Name] = models.Session{login, time.Now()}
 		config.UsersTable[login] = c
+
+		fmt.Println(c)
 
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	}
@@ -124,11 +127,15 @@ func ShowProfile(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		r.ParseForm()
 
-		http.SetCookie(w, &http.Cookie{
-			Name:   config.CookieName,
-			Value:  "",
-			MaxAge: -1,
-		})
+		cookie := &http.Cookie{
+			Name:  "my_cookie",
+			Value: "",
+			Path:  "/",
+			MaxAge:  -1,
+			Expires: time.Now().Add(-1 * time.Minute),
+		}
+
+		http.SetCookie(w, cookie)
 
 		http.Redirect(w, r, "/", 303)
 		return
