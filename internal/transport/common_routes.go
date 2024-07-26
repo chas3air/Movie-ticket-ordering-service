@@ -20,8 +20,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
-		//http.Redirect(w, r, "/movies", http.StatusSeeOther)
-		http.Error(w, "index redirect", 303)
+		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		return
 	}
 
@@ -36,8 +35,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	//_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
-		//http.Redirect(w, r, "/movies", http.StatusSeeOther)
-		http.Error(w, "login redirect", 303)
+		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		return
 	}
 
@@ -76,8 +74,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	//_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
-		//http.Redirect(w, r, "/movies", http.StatusSeeOther)
-		http.Error(w, "sign up redirect", 303)
+		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		return
 	}
 
@@ -115,7 +112,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		log.Println(cookie.Value, "-", new_cust)
 
 		http.SetCookie(w, cookie)
-		http.Redirect(w, r, "/movies", 303)
+		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	}
 
 	err := tpl.ExecuteTemplate(w, "index_signup.html", nil)
@@ -129,8 +126,8 @@ func ShowProfile(w http.ResponseWriter, r *http.Request) {
 	u := services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); !ok {
-		//http.Redirect(w, r, "/", http.StatusSeeOther)
-		http.Error(w, "profile redirect", 303)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		//http.Error(w, "profile redirect", http.StatusSeeOther)
 		return
 	}
 
@@ -143,7 +140,7 @@ func ShowProfile(w http.ResponseWriter, r *http.Request) {
 			MaxAge: -1,
 		})
 
-		http.Redirect(w, r, "/", 303)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 

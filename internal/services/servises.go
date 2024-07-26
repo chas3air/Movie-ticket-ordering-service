@@ -15,14 +15,8 @@ func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println("*****")
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
-			c, err := r.Cookie(config.CookieName)
-			if err != nil {
-				http.Error(w, "cookie not found", 404)
-				return
-			} else {
-				http.Error(w, config.SessionTable[c.Value].String(), 404)
-				return
-			}
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
 		}
 		log.Println("*****")
 
@@ -39,14 +33,8 @@ func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 func UserMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
-			c, err := r.Cookie(config.CookieName)
-			if err != nil {
-				http.Error(w, "cookie not found", 404)
-				return
-			} else {
-				http.Error(w, c.Value, 404)
-				return
-			}
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
 		}
 
 		u := GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
@@ -79,9 +67,8 @@ func GetUser(w http.ResponseWriter, r *http.Request, key string, limitTime int, 
 		st[cookie.Value] = s
 		u = ut[s.UserLogin]
 		return u
-	} else {
-		panic(err)
 	}
+	return models.Customer{}
 }
 
 func AlreadyLoggedIn(w http.ResponseWriter, r *http.Request, key string, limitTime int, ut map[string]models.Customer, st map[string]models.Session) bool {
