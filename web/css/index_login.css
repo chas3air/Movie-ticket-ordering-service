@@ -6,7 +6,6 @@ body {
     font-family: Arial, sans-serif;
 }
   
-  /* Стили для header */
 header {
     display: flex;
     background-color: #333;
@@ -20,7 +19,6 @@ header h1 {
     margin: 0;
 }
   
-  /* Стили для main */
 main {
     display: flex;
     flex-direction: row;
@@ -31,7 +29,6 @@ main {
     align-items: center;
 }
   
-  /* Стили для footer */
 footer {
     display: flex;
     background-color: #f1f1f1;
@@ -42,21 +39,18 @@ footer {
     align-items: center;
 }
 
-/* Стили для контейнера формы */
 .form-group {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
 }
   
-  /* Стили для label */
 .form-group label {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
 }
   
-  /* Стили для input */
 .form-group input {
     padding: 10px;
     font-size: 16px;

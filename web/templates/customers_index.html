@@ -9,21 +9,18 @@
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <h1>Users</h1>
-            <a href="/profile" class="profile-link">
-                <div class="profile-icon">
-                    Profile
-                </div>
+        <div class="logo">
+            <a href="/profile">
+                <div class="logo-block"></div>
             </a>
         </div>
+        <h1>Customers</h1>
     </header>
 
     <main>
-        <a href="/profile"><div class="create">profile</div></a>
-        <a href="/customers/create"><div class="create">create user</div></a>
+        <a href="/customers/create" class="create">create user</a>
         <div class="elements">
-            {{range .}} 
+            {{range .}}
                 <div class="item">
                     <p>Login: {{.Login}}</p>
                     <p>Password: {{.Password}}</p>

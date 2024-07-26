@@ -12,36 +12,30 @@ header {
     align-items: center;
     background-color: #333;
     color: #fff;
-    padding: 1rem;
-}
-
-.header-content {
+    padding: 10px 20px;
+  }
+  
+.logo {
     display: flex;
     align-items: center;
 }
-
-.profile-link {
+  
+.logo a {
+    display: block;
     text-decoration: none;
     color: inherit;
-    display: flex;
-    align-items: center;
-    margin-left: auto;
 }
-
-.profile-icon {
+  
+.logo-block {
     width: 30px;
     height: 30px;
+    background-color: #ccc;
     border-radius: 50%;
-    background-color: #555;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 1rem;
 }
-
-.profile-icon i {
-    color: #fff;
-    font-size: 16px;
+  
+h1 {
+    font-size: 24px;
+    margin: 0;
 }
 
 main {
@@ -88,10 +82,26 @@ footer {
 
 .create {
     display: flex;
-    width: 100%;
     justify-content: center;
     align-items: center;
     border: 1px solid black;
     border-radius: 5px;
     margin: 5px 40px 5px 20px;
+    text-decoration: none;
+    color: inherit;
+    padding: 5px 10px;
+}
+
+.elements {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.item {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
 }

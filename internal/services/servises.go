@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"go_psql/internal/config"
 	"go_psql/internal/models"
-	"log"
 	"net/http"
 	"time"
 
@@ -13,12 +12,10 @@ import (
 
 func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println("*****")
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
-		log.Println("*****")
 
 		u := GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 		if u.Role != "admin" {
@@ -74,7 +71,6 @@ func GetUser(w http.ResponseWriter, r *http.Request, key string, limitTime int, 
 func AlreadyLoggedIn(w http.ResponseWriter, r *http.Request, key string, limitTime int, ut map[string]models.Customer, st map[string]models.Session) bool {
 	cookie, err := r.Cookie(key)
 	if err != nil {
-		log.Println("cookie not found")
 		return false
 	}
 	cookie.MaxAge = limitTime
@@ -85,16 +81,10 @@ func AlreadyLoggedIn(w http.ResponseWriter, r *http.Request, key string, limitTi
 		s.LastActivity = time.Now()
 		st[cookie.Value] = s
 	} else {
-		log.Println(config.SessionTable[cookie.Value].String())
 		return false
 	}
 
-	u, ok := ut[s.UserLogin]
-	if !ok {
-		log.Println("user not found")
-	} else {
-		log.Println(u)
-	}
+	_, ok = ut[s.UserLogin]
 	return ok
 }
 

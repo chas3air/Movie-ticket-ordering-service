@@ -8,9 +8,16 @@
     <title>Index</title>
 </head>
 <body>
-    <header>Movies</header>
+    <header>
+        <div class="logo">
+            <a href="/profile">
+                <div class="logo-block"></div>
+            </a>
+        </div>
+        <h1>Movies</h1>
+    </header>
     <main>
-        <a href="/movies/create"><div class="create">create movie</div></a>
+        <a href="/movies/create" class="create">create movie</a>
         <div class="elements">
             {{range .}}
                 <div class="item">

@@ -6,7 +6,6 @@ import (
 	"go_psql/internal/models"
 	"go_psql/internal/services"
 	"go_psql/web"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -109,8 +108,6 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		config.SessionTable[cookie.Value] = models.Session{login, time.Now()}
 		config.UsersTable[login] = new_cust
 
-		log.Println(cookie.Value, "-", new_cust)
-
 		http.SetCookie(w, cookie)
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	}
@@ -143,9 +140,6 @@ func ShowProfile(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
-	c, _ := r.Cookie(config.CookieName)
-	log.Println(c.Value, "-", u)
 
 	err := tpl.ExecuteTemplate(w, "index_profile.html", u)
 	if err != nil {
