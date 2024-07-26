@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go_psql/internal/config"
 	"go_psql/internal/models"
+	"log"
 	"net/http"
 	"time"
 
@@ -12,10 +13,18 @@ import (
 
 func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("*****")
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
-			http.Redirect(w, r, "/", 303)
-			return
+			c, err := r.Cookie(config.CookieName)
+			if err != nil {
+				http.Error(w, "cookie not found", 404)
+				return
+			} else {
+				http.Error(w, config.SessionTable[c.Value].String(), 404)
+				return
+			}
 		}
+		log.Println("*****")
 
 		u := GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 		if u.Role != "admin" {
@@ -30,8 +39,14 @@ func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 func UserMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
-			http.Redirect(w, r, "/", 303)
-			return
+			c, err := r.Cookie(config.CookieName)
+			if err != nil {
+				http.Error(w, "cookie not found", 404)
+				return
+			} else {
+				http.Error(w, c.Value, 404)
+				return
+			}
 		}
 
 		u := GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
@@ -53,42 +68,55 @@ func GetUser(w http.ResponseWriter, r *http.Request, key string, limitTime int, 
 		}
 		cookie.MaxAge = limitTime
 		http.SetCookie(w, cookie)
+
+		return models.Customer{}
 	}
 
 	u := models.Customer{}
-	s, ok := st[cookie.Name]
+	s, ok := st[cookie.Value]
 	if ok {
 		s.LastActivity = time.Now()
-		st[cookie.Name] = s
+		st[cookie.Value] = s
 		u = ut[s.UserLogin]
+		return u
+	} else {
+		panic(err)
 	}
-
-	return u
 }
 
 func AlreadyLoggedIn(w http.ResponseWriter, r *http.Request, key string, limitTime int, ut map[string]models.Customer, st map[string]models.Session) bool {
 	cookie, err := r.Cookie(key)
 	if err != nil {
+		log.Println("cookie not found")
 		return false
 	}
+	cookie.MaxAge = limitTime
+	http.SetCookie(w, cookie)
 
-	s, ok := st[cookie.Name]
+	s, ok := st[cookie.Value]
 	if ok {
 		s.LastActivity = time.Now()
 		st[cookie.Value] = s
+	} else {
+		log.Println(config.SessionTable[cookie.Value].String())
+		return false
 	}
 
-	_, ok = ut[s.UserLogin]
-	cookie.MaxAge = limitTime
-	http.SetCookie(w, cookie)
+	u, ok := ut[s.UserLogin]
+	if !ok {
+		log.Println("user not found")
+	} else {
+		log.Println(u)
+	}
 	return ok
 }
 
-func SessionCleaner(session_table map[string]models.Session, limitTime int) {
+func SessionCleaner(session_table map[string]models.Session, ut map[string]models.Customer, limitTime int) {
 	for {
 		for i, v := range session_table {
 			if time.Now().Sub(v.LastActivity) > (time.Second * time.Duration(limitTime)) {
 				delete(session_table, i)
+				delete(ut, v.UserLogin)
 			}
 		}
 

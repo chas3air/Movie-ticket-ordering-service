@@ -11,7 +11,7 @@ import (
 
 func Run() {
 	// sessoin work
-	go services.SessionCleaner(config.SessionTable, config.LimitTime)
+	go services.SessionCleaner(config.SessionTable, config.UsersTable, config.LimitTime)
 	go services.ShowSessions(config.SessionTable)
 
 	// router gorilla/max

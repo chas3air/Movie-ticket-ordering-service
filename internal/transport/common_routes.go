@@ -1,12 +1,12 @@
 package transport
 
 import (
-	"fmt"
 	"go_psql/internal/config"
 	"go_psql/internal/database/psql"
 	"go_psql/internal/models"
 	"go_psql/internal/services"
 	"go_psql/web"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -17,8 +17,11 @@ import (
 var tpl = web.GetTPL()
 
 func Index(w http.ResponseWriter, r *http.Request) {
+	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
+
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
-		http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		//http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		http.Error(w, "index redirect", 303)
 		return
 	}
 
@@ -30,10 +33,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
+	//_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
-		http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		//http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		http.Error(w, "login redirect", 303)
 		return
 	}
 
@@ -49,14 +53,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		cookie := &http.Cookie{
-			Name:  config.CookieName,
-			Value: uuid.NewV4().String(),
+			Name:   config.CookieName,
+			Value:  uuid.NewV4().String(),
+			MaxAge: config.LimitTime,
 		}
-		config.SessionTable[cookie.Name] = models.Session{login, time.Now()}
+
+		config.SessionTable[cookie.Value] = models.Session{login, time.Now()}
 		config.UsersTable[login] = c
 
-		fmt.Println(c)
-
+		http.SetCookie(w, cookie)
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 	}
 
@@ -68,10 +73,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func Signup(w http.ResponseWriter, r *http.Request) {
-	_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
+	//_ = services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); ok {
-		http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		//http.Redirect(w, r, "/movies", http.StatusSeeOther)
+		http.Error(w, "sign up redirect", 303)
 		return
 	}
 
@@ -98,12 +104,15 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		}
 
 		cookie := &http.Cookie{
-			Name:  config.CookieName,
-			Value: uuid.NewV4().String(),
+			Name:   config.CookieName,
+			Value:  uuid.NewV4().String(),
+			MaxAge: config.LimitTime,
 		}
 
-		config.SessionTable[cookie.Name] = models.Session{login, time.Now()}
+		config.SessionTable[cookie.Value] = models.Session{login, time.Now()}
 		config.UsersTable[login] = new_cust
+
+		log.Println(cookie.Value, "-", new_cust)
 
 		http.SetCookie(w, cookie)
 		http.Redirect(w, r, "/movies", 303)
@@ -120,26 +129,26 @@ func ShowProfile(w http.ResponseWriter, r *http.Request) {
 	u := services.GetUser(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable)
 
 	if ok := services.AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable); !ok {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		//http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Error(w, "profile redirect", 303)
 		return
 	}
 
 	if r.Method == http.MethodPost {
 		r.ParseForm()
 
-		cookie := &http.Cookie{
-			Name:  "my_cookie",
-			Value: "",
-			Path:  "/",
-			MaxAge:  -1,
-			Expires: time.Now().Add(-1 * time.Minute),
-		}
-
-		http.SetCookie(w, cookie)
+		http.SetCookie(w, &http.Cookie{
+			Name:   config.CookieName,
+			Value:  "",
+			MaxAge: -1,
+		})
 
 		http.Redirect(w, r, "/", 303)
 		return
 	}
+
+	c, _ := r.Cookie(config.CookieName)
+	log.Println(c.Value, "-", u)
 
 	err := tpl.ExecuteTemplate(w, "index_profile.html", u)
 	if err != nil {

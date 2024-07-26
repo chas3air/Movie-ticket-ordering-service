@@ -37,12 +37,12 @@ func Create_movies(w http.ResponseWriter, r *http.Request) {
 
 		releare_year_i, err := strconv.Atoi(releare_year_s)
 		if err != nil {
-			http.Error(w, `<script> alert("year must be number"); </script>`, http.StatusBadRequest)
+			http.Error(w, "year must be number", http.StatusBadRequest)
 			return
 		}
 		duration_i, err := strconv.Atoi(duration_s)
 		if err != nil {
-			http.Error(w, `<script> alert("duration must be number"); </script>`, http.StatusBadRequest)
+			http.Error(w, "duration must be number", http.StatusBadRequest)
 			return
 		}
 
@@ -81,12 +81,12 @@ func Update_movies(w http.ResponseWriter, r *http.Request) {
 
 		releare_year_i, err := strconv.Atoi(releare_year_s)
 		if err != nil {
-			http.Error(w, `<script> alert("year must be number"); </script>`, http.StatusBadRequest)
+			http.Error(w, "year must be number", http.StatusBadRequest)
 			return
 		}
 		duration_i, err := strconv.Atoi(duration_s)
 		if err != nil {
-			http.Error(w, `<script> alert("duration must be number"); </script>`, http.StatusBadRequest)
+			http.Error(w, "duration must be number", http.StatusBadRequest)
 			return
 		}
 
