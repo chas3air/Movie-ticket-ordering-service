@@ -2,14 +2,19 @@ package json
 
 import (
 	"encoding/json"
+	"fmt"
 	"go_psql/internal/models"
 	"io/ioutil"
 	"os"
 )
 
 func UnmarshalTickets(filepath string) ([]models.Ticket, error) {
-	file, err := os.Open(filepath)
+	path, err := os.Getwd()
+	fmt.Println("path:", path)
+
+	file, err := os.Open("/internal/database/json/tickets.json")
 	if err != nil {
+		fmt.Println("Error getting working directory:", err)
 		return []models.Ticket{}, err
 	}
 	defer file.Close()
