@@ -146,16 +146,16 @@ func OrderTicketToMovie(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		email := r.Form.Get("email")
 
-		t := models.Ticket{string(rand.Intn(1000000)), m.Title, time.Now(), 0, email}
+		t := models.Ticket{string(rand.Intn(100000)), m.Title, time.Now(), 0, email}
 
-		allTickets, err := json.UnmarshalTickets(config.PathToTicketJsonFile)
+		allTickets, err := json.UnmarshalTickets(config.PathJsonFile + "/tickets.json")
 		if err != nil {
 			log.Println("1", err)
 			return
 		}
 
 		allTickets = append(allTickets, t)
-		err = json.MarshalTickets(config.PathToTicketJsonFile, allTickets)
+		err = json.MarshalTickets("internal/database/json/tickets.json", allTickets)
 		if err != nil {
 			log.Println("2", err)
 			return

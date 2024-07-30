@@ -1,0 +1,47 @@
+[
+    {
+      "id": 1,
+      "login": "user1",
+      "password": "pass1",
+      "role": "admin",
+      "name": "John",
+      "surname": "Doe",
+      "age": 35
+    },
+    {
+      "id": 2,
+      "login": "user2",
+      "password": "pass2",
+      "role": "user",
+      "name": "Jane",
+      "surname": "Smith",
+      "age": 28
+    },
+    {
+      "id": 3,
+      "login": "user3",
+      "password": "pass3",
+      "role": "user",
+      "name": "Bob",
+      "surname": "Johnson",
+      "age": 42
+    },
+    {
+      "id": 4,
+      "login": "user4",
+      "password": "pass4",
+      "role": "admin",
+      "name": "Alice",
+      "surname": "Williams",
+      "age": 31
+    },
+    {
+      "id": 5,
+      "login": "user5",
+      "password": "pass5",
+      "role": "user",
+      "name": "Tom",
+      "surname": "Davis",
+      "age": 25
+    }
+]

@@ -2,7 +2,6 @@ package config
 
 import (
 	"go_psql/internal/models"
-	"path/filepath"
 )
 
 const TemplatesPath = "go_psql/web/templates"
@@ -10,7 +9,7 @@ const DataBaseName = "models"
 const UsersTableName = "users"
 const MoviesTableName = "movies"
 
-var PathToTicketJsonFile = filepath.Join("internal", "database", "json", "tickets.json")
+var PathJsonFile = "internal/database/json"
 
 const LimitTime = 60
 const CookieName = "session_user"

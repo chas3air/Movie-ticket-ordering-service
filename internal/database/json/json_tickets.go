@@ -9,10 +9,7 @@ import (
 )
 
 func UnmarshalTickets(filepath string) ([]models.Ticket, error) {
-	path, err := os.Getwd()
-	fmt.Println("path:", path)
-
-	file, err := os.Open("/internal/database/json/tickets.json")
+	file, err := os.Open(filepath)
 	if err != nil {
 		fmt.Println("Error getting working directory:", err)
 		return []models.Ticket{}, err
