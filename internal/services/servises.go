@@ -10,10 +10,11 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
+func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc { //SOMETHING WRONG
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !AlreadyLoggedIn(w, r, config.CookieName, config.LimitTime, config.UsersTable, config.SessionTable) {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			fmt.Println("hole here")
+			http.Error(w, "some wrong", 404)
 			return
 		}
 
@@ -53,6 +54,8 @@ func GetUser(w http.ResponseWriter, r *http.Request, key string, limitTime int, 
 		}
 		cookie.MaxAge = limitTime
 		http.SetCookie(w, cookie)
+
+		fmt.Println("new cookie was added:", cookie.Value)
 
 		return models.Customer{}
 	}
