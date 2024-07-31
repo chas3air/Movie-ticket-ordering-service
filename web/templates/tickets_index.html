@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/web/css/tickets_index.css">
+    <title>Tickets</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/profile">
+                <div class="logo-block"></div>
+            </a>
+        </div>
+        <h1>Tickets</h1>
+    </header>
+
+    <main>
+        <div class="elements">
+            {{range .}}
+                <div class="item">
+                    <p>Id: {{.Id}}</p>
+                    <p>Movie title: {{.MovieTitle}}</p>
+                    <p>Movie time: {{.MovieTime}}</p>
+                    <p>Email: {{.Email}}</p>
+                    <a href="/tickets/update?id={{.Id}}">update</a>
+                    <a href="/tickets/delete?id={{.Id}}">delete</a>
+                </div>
+            {{end}}
+        </div>
+    </main>
+
+    <footer>...</footer>
+</body>
+</html>

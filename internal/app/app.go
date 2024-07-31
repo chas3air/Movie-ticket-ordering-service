@@ -38,5 +38,9 @@ func Run() {
 	r.HandleFunc("/movies", services.UserMiddleware(transport.ShowMoviesForUser))
 	r.HandleFunc("/ordermovie", services.UserMiddleware(transport.OrderTicketToMovie))
 
+	r.HandleFunc("/tickets", services.AdminMiddleware(transport.Index_tickets))
+	r.HandleFunc("/tickets/update", services.AdminMiddleware(transport.Update_tickets))
+	r.HandleFunc("/tickets/delete", services.AdminMiddleware(transport.Delete_tickets))
+
 	http.ListenAndServe(":8080", r)
 }

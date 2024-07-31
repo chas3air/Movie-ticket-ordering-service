@@ -145,8 +145,17 @@ func OrderTicketToMovie(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodPost {
 		email := r.Form.Get("email")
+		movieDate_s := r.Form.Get("movieDate")
+		seat_s := r.Form.Get("seat")
+		seat_i, _ := strconv.Atoi(seat_s)
 
-		t := models.Ticket{string(rand.Intn(100000)), m.Title, time.Now(), 0, email}
+		movieDateTime, err := time.Parse(`2006-01-02T15:04`, movieDate_s)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		t := models.Ticket{string(rand.Intn(100000)), m.Title, movieDateTime, seat_i, email}
 
 		allTickets, err := json.UnmarshalTickets(config.PathJsonFile + "/tickets.json")
 		if err != nil {

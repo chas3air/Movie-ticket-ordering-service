@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/web/css/ticket_update.css">
+    <title>Update Ticket</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/profile">
+                <div class="logo-block"></div>
+            </a>
+        </div>
+        <h1>Update Ticket</h1>
+    </header>
+    <main>
+        <form method="post">
+            <div class="form-group">
+                <label for="id">ID</label>
+                <input type="text" name="id" required autofocus value="{{.Id}}">
+                <br>
+            </div>
+
+            <div class="form-group">
+                <label for="movieTitle">Movie Title</label>
+                <input type="text" name="movie_title" required value="{{.MovieTitle}}">
+                <br>
+            </div>
+
+            <div class="form-group">
+                <label for="movieTime">Movie Time</label>
+                <input type="datetime-local" name="movie_time" required value="{{.MovieTime.Format `2006-01-02T15:04`}}">
+                <br>
+            </div>
+
+            <div class="form-group">
+                <label for="viewingArea">Viewing Area</label>
+                <input type="number" name="viewing_area" required value="{{.ViewingArea}}">
+                <br>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" required value="{{.Email}}">
+                <br>
+            </div>
+
+            <div class="form-group">
+                <input type="submit"><br>
+            </div>
+        </form>
+    </main>
+<footer>...</footer>
+</body>
+</html>

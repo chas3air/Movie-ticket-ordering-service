@@ -14,7 +14,7 @@
                 <div class="logo-block"></div>
             </a>
         </div>
-        <h1>Order movie</h1>
+        <h1>Order Movie</h1>
     </header>
     <main>
         <form method="post">
@@ -23,6 +23,16 @@
                 <input type="email" name="email" required>
             </div>
 
+            <div class="form-group">
+                <label for="movieDate">Movie Date</label>
+                <input type="datetime-local" name="movieDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="seat">Seat</label>
+                <input type="text" name="seat" required>
+            </div>
+            
             <div class="form-group">
                 <input type="submit">
             </div>
